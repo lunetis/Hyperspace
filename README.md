@@ -1,2 +1,2 @@
 # Hyperspace
- Capstone Design II Project
+ Sogang University Capstone Design II Project
