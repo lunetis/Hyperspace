@@ -19,30 +19,35 @@ public class ObjectEditor : MonoBehaviour
 
     int layerMask;
 
-    public GameObject debugObject;
-    Material debugMaterial;
-
     public float raycastDistance;
 
+
+    // Object moving
     public GameObject selectedMovableObject;
-
     public GameObject movingObject;
+    bool isMoving;
 
+    // Scroll to rotate moving object
+    float objectRotation;
+    public float rotationAmount;
+    Rigidbody movingObjectRigidbody;
+
+    // Misc.
     int movableObjectLayer;
     int movingObjectLayer;
 
-    bool isMoving;
+    
+    public GameObject debugObject;
+    Material debugMaterial;
 
     void CreateObject()
     {
         if(objectIndex < creatableObjects.Count) return;
-
         GameObject obj = Instantiate(creatableObjects[objectIndex - 1], debugObject.transform.position, Quaternion.identity);
 
         if(isThrow == true)
         {
             Rigidbody rigidbody = obj.GetComponent<Rigidbody>();
-
             if(rigidbody == null) return;
 
             rigidbody.velocity = raycastOrigin.forward * throwForce;
@@ -65,8 +70,13 @@ public class ObjectEditor : MonoBehaviour
             movingObject.transform.position = raycastOrigin.position + raycastOrigin.forward * raycastDistance;
         }
 
-        movingObject.transform.rotation = transform.rotation;
-        movingObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        // Set Rotation and clear velocity;
+        movingObject.transform.eulerAngles = transform.eulerAngles + new Vector3(0, objectRotation, 0);
+
+        if(movingObjectRigidbody != null)
+        {
+            movingObjectRigidbody.velocity = Vector3.zero;
+        }
     }
 
 
@@ -81,6 +91,22 @@ public class ObjectEditor : MonoBehaviour
         debugMaterial = debugObject.GetComponent<MeshRenderer>().material;
 
         isMoving = false;
+    }
+
+
+    GameObject GetParentObject(GameObject selectedMovableObject)
+    {
+        Transform current = selectedMovableObject.transform;
+        Transform parent = selectedMovableObject.transform.parent;
+
+        while(parent != null && parent.gameObject.layer == movableObjectLayer)
+        {
+            current = parent;
+            parent = current.parent;
+        }
+
+        print(current);
+        return current.gameObject;
     }
 
     // Update is called once per frame
@@ -113,30 +139,54 @@ public class ObjectEditor : MonoBehaviour
         }
 
 
+        // Mouse input
+        // Left Click: Create object
         if(Input.GetMouseButtonDown(0))
         {
+            objectRotation = 0;
             CreateObject();
         }
 
+        // Left click release
         if(Input.GetMouseButtonDown(1) && selectedMovableObject != null)
         {
             isMoving = true;
-            movingObject = selectedMovableObject;
+
+            movingObject = GetParentObject(selectedMovableObject);
+            movingObjectRigidbody = movingObject.GetComponent<Rigidbody>();
+
+            // Set layer
             movingObject.layer = movingObjectLayer;
+            foreach(Transform child in movingObject.transform)
+            {
+                child.gameObject.layer = movingObjectLayer;
+            }
         }
 
+        // Right Click: Move movable object
         if(Input.GetMouseButtonUp(1) && isMoving == true)
         {
             isMoving = false;
             
+            // Set layer
             movingObject.layer = movableObjectLayer;
+            foreach(Transform child in movingObject.transform)
+            {
+                child.gameObject.layer = movableObjectLayer;
+            }
             movingObject = null;
+        }
+
+        // Right click release: stop moving object
+        if(movingObject != null && Input.mouseScrollDelta != Vector2.zero)
+        {
+            objectRotation += Input.mouseScrollDelta.y * Time.deltaTime * rotationAmount;
         }
 
         if(isMoving == true)
         {
             MoveObject();
-        }        
+        }
 
         isThrow = Input.GetKey(KeyCode.LeftShift);
     }

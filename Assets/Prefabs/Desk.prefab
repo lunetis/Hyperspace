@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7185185123508204981}
   - component: {fileID: 7185185123508204978}
   - component: {fileID: 7185185123508204979}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desk Leg5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 7185185123580816595}
   - component: {fileID: 7185185123580816592}
   - component: {fileID: 7185185123580816593}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desk Leg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 7185185123758803847}
   - component: {fileID: 7185185123758803844}
   - component: {fileID: 7185185123758803845}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desk Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7185185123758803843}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.079229, y: 2.403, z: 0.14252663}
+  m_LocalPosition: {x: -0.02, y: 0.53, z: -0.03}
   m_LocalScale: {x: 0.5, y: 0.05, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -300,7 +300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7185185123897491390}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desk Leg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,7 +315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7185185123897491391}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5.06, y: -1.87, z: -0.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -340,7 +340,7 @@ GameObject:
   - component: {fileID: 7185185124145311841}
   - component: {fileID: 7185185124145311870}
   - component: {fileID: 7185185124145311871}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desk Leg3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7185185124232112656}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -449,7 +449,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7185185124232112657}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 3, y: -1.59, z: -5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -470,7 +470,7 @@ GameObject:
   - component: {fileID: 7185185124574592719}
   - component: {fileID: 7185185124574592716}
   - component: {fileID: 7185185124574592717}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desk Leg4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,7 +567,7 @@ GameObject:
   - component: {fileID: 7185185124963475855}
   - component: {fileID: 7185185124963475852}
   - component: {fileID: 7185185124963475853}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desk Leg2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,7 +664,7 @@ GameObject:
   - component: {fileID: 7185185125128798005}
   - component: {fileID: 7185185125128798002}
   - component: {fileID: 7185185125128798003}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Desk Leg6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
