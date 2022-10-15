@@ -55,7 +55,6 @@ public class MoveScript : MonoBehaviour
         cameraPivot.localRotation = Quaternion.Euler(rotation.x, 0, 0);
         transform.rotation = localRotation;
 
-
         // Move
         if (controller.isGrounded)
         {
@@ -63,7 +62,7 @@ public class MoveScript : MonoBehaviour
             direction = controller.transform.TransformDirection(direction);
             direction *= Speed;
 
-            if (controller.isGrounded == true && Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump"))
             {
                 direction.y = JumpPow;
             }

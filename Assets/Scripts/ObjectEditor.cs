@@ -24,6 +24,15 @@ public class ObjectEditor : MonoBehaviour
 
     public float raycastDistance;
 
+    public GameObject selectedMovableObject;
+
+    public GameObject movingObject;
+
+    int movableObjectLayer;
+    int movingObjectLayer;
+
+    bool isMoving;
+
     void CreateObject()
     {
         if(objectIndex < creatableObjects.Count) return;
@@ -40,12 +49,38 @@ public class ObjectEditor : MonoBehaviour
         }
     }
 
+    void MoveObject()
+    {
+        if(movingObject == null) return;
+
+        RaycastHit hit;
+        Physics.Raycast(raycastOrigin.position, raycastOrigin.forward, out hit, raycastDistance, layerMask);
+
+        if(hit.collider != null)
+        {
+            movingObject.transform.position = hit.point;
+        }
+        else
+        {
+            movingObject.transform.position = raycastOrigin.position + raycastOrigin.forward * raycastDistance;
+        }
+
+        movingObject.transform.rotation = transform.rotation;
+        movingObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
+        movableObjectLayer = LayerMask.NameToLayer("MovableObject");
+        movingObjectLayer = LayerMask.NameToLayer("MovingObject");
         layerMask = (1 << LayerMask.NameToLayer("Ground"));
+        layerMask += (1 << movableObjectLayer);
+        
         debugMaterial = debugObject.GetComponent<MeshRenderer>().material;
+
+        isMoving = false;
     }
 
     // Update is called once per frame
@@ -53,16 +88,28 @@ public class ObjectEditor : MonoBehaviour
     {
         RaycastHit hit;
         Physics.Raycast(raycastOrigin.position, raycastOrigin.forward, out hit, raycastDistance, layerMask);
-        // Debug.Log(moveScript.LookRotation);
+        // Debug.DrawRay(raycastOrigin.position, raycastOrigin.position + raycastOrigin.forward * raycastDistance, Color.red);
+
         if(hit.collider != null)
         {
             debugObject.transform.position = hit.point;
-            debugMaterial.color = Color.blue;
+
+            if(hit.collider.gameObject.layer == movableObjectLayer)
+            {
+                debugMaterial.color = Color.green;
+                selectedMovableObject = hit.collider.gameObject;
+            }
+            else
+            {
+                debugMaterial.color = Color.blue;
+                selectedMovableObject = null;
+            }
         }
         else
         {
             debugObject.transform.position = raycastOrigin.position + raycastOrigin.forward * raycastDistance;
             debugMaterial.color = Color.red;
+            selectedMovableObject = null;
         }
 
 
@@ -70,6 +117,26 @@ public class ObjectEditor : MonoBehaviour
         {
             CreateObject();
         }
+
+        if(Input.GetMouseButtonDown(1) && selectedMovableObject != null)
+        {
+            isMoving = true;
+            movingObject = selectedMovableObject;
+            movingObject.layer = movingObjectLayer;
+        }
+
+        if(Input.GetMouseButtonUp(1) && isMoving == true)
+        {
+            isMoving = false;
+            
+            movingObject.layer = movableObjectLayer;
+            movingObject = null;
+        }
+
+        if(isMoving == true)
+        {
+            MoveObject();
+        }        
 
         isThrow = Input.GetKey(KeyCode.LeftShift);
     }
