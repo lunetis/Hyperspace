@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ObjectEditor : MonoBehaviour
 {
@@ -40,10 +41,11 @@ public class ObjectEditor : MonoBehaviour
     public GameObject debugObject;
     Material debugMaterial;
 
+
     void CreateObject()
     {
-        if(objectIndex < creatableObjects.Count) return;
-        GameObject obj = Instantiate(creatableObjects[objectIndex - 1], debugObject.transform.position, Quaternion.identity);
+        if(objectIndex >= creatableObjects.Count || objectIndex < 0) return;
+        GameObject obj = Instantiate(creatableObjects[objectIndex], debugObject.transform.position, Quaternion.identity);
 
         if(isThrow == true)
         {
@@ -91,6 +93,8 @@ public class ObjectEditor : MonoBehaviour
         debugMaterial = debugObject.GetComponent<MeshRenderer>().material;
 
         isMoving = false;
+
+        FindObjectOfType<CreatableObjectButtonUI>()?.SetButton(this, creatableObjects);
     }
 
 
@@ -105,7 +109,6 @@ public class ObjectEditor : MonoBehaviour
             parent = current.parent;
         }
 
-        print(current);
         return current.gameObject;
     }
 

@@ -56,11 +56,11 @@ public class MoveScript : MonoBehaviour
         transform.rotation = localRotation;
 
         // Move
+        direction.x = Input.GetAxis("Horizontal") * Speed;
+        direction.z = Input.GetAxis("Vertical") * Speed;
+        direction = controller.transform.TransformDirection(direction);
         if (controller.isGrounded)
         {
-            direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            direction = controller.transform.TransformDirection(direction);
-            direction *= Speed;
 
             if (Input.GetButtonDown("Jump"))
             {
