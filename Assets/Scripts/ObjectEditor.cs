@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ObjectEditor : MonoBehaviour
 {
+    public string ownershipName;
+
     // Object creation
     public List<GameObject> creatableObjects;
     public int objectIndex;
@@ -37,6 +39,7 @@ public class ObjectEditor : MonoBehaviour
     int movableObjectLayer;
     int movingObjectLayer;
 
+    CreatedObject pointingObjectScript;
     
     public GameObject debugObject;
     Material debugMaterial;
@@ -54,6 +57,10 @@ public class ObjectEditor : MonoBehaviour
 
             rigidbody.velocity = raycastOrigin.forward * throwForce;
         }
+
+        // Add ownership
+        CreatedObject createdObject = obj.AddComponent<CreatedObject>();
+        createdObject.Ownership = ownershipName;
     }
 
     void MoveObject()
@@ -81,23 +88,6 @@ public class ObjectEditor : MonoBehaviour
         }
     }
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        movableObjectLayer = LayerMask.NameToLayer("MovableObject");
-        movingObjectLayer = LayerMask.NameToLayer("MovingObject");
-        layerMask = (1 << LayerMask.NameToLayer("Ground"));
-        layerMask += (1 << movableObjectLayer);
-        
-        debugMaterial = debugObject.GetComponent<MeshRenderer>().material;
-
-        isMoving = false;
-
-        FindObjectOfType<CreatableObjectButtonUI>()?.SetButton(this, creatableObjects);
-    }
-
-
     GameObject GetParentObject(GameObject selectedMovableObject)
     {
         Transform current = selectedMovableObject.transform;
@@ -112,10 +102,27 @@ public class ObjectEditor : MonoBehaviour
         return current.gameObject;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        movableObjectLayer = LayerMask.NameToLayer("MovableObject");
+        movingObjectLayer = LayerMask.NameToLayer("MovingObject");
+        layerMask = (1 << LayerMask.NameToLayer("Ground"));
+        layerMask += (1 << movableObjectLayer);
+        
+        debugMaterial = debugObject.GetComponent<MeshRenderer>().material;
+
+        isMoving = false;
+        pointingObjectScript = null;
+
+        FindObjectOfType<CreatableObjectButtonUI>()?.SetButton(this, creatableObjects);
+    }
+
+    void CheckObject()
     {
         RaycastHit hit;
+        GameObject currentPointingObject;
         Physics.Raycast(raycastOrigin.position, raycastOrigin.forward, out hit, raycastDistance, layerMask);
         // Debug.DrawRay(raycastOrigin.position, raycastOrigin.position + raycastOrigin.forward * raycastDistance, Color.red);
 
@@ -125,37 +132,99 @@ public class ObjectEditor : MonoBehaviour
 
             if(hit.collider.gameObject.layer == movableObjectLayer)
             {
-                debugMaterial.color = Color.green;
-                selectedMovableObject = hit.collider.gameObject;
+                currentPointingObject = GetParentObject(hit.collider.gameObject);
             }
             else
             {
                 debugMaterial.color = Color.blue;
-                selectedMovableObject = null;
+                currentPointingObject = null;
             }
         }
         else
         {
             debugObject.transform.position = raycastOrigin.position + raycastOrigin.forward * raycastDistance;
             debugMaterial.color = Color.red;
-            selectedMovableObject = null;
+            currentPointingObject = null;
         }
 
+        // Need to refresh
+        if(selectedMovableObject != currentPointingObject)
+        {
+            // Set CreatedObject Script
+            if(currentPointingObject == null)
+            {
+                pointingObjectScript = null;
+            }
+            else
+            {
+                pointingObjectScript = currentPointingObject.GetComponent<CreatedObject>();
+            }
+            
+            // Green: Movable / Yellow: Not movable (created by other)
+            if(pointingObjectScript != null && pointingObjectScript.Ownership != ownershipName)
+            {
+                debugMaterial.color = Color.yellow;
+            }
+            else
+            {
+                debugMaterial.color = Color.green;
+            }
+            
+            selectedMovableObject = currentPointingObject;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(movingObject != null && Input.mouseScrollDelta != Vector2.zero)
+        {
+            objectRotation += Input.mouseScrollDelta.y * Time.deltaTime * rotationAmount;
+        }
+
+        isThrow = Input.GetKey(KeyCode.LeftShift);
+
+        CheckObject();
 
         // Mouse input
-        // Left Click: Create object
-        if(Input.GetMouseButtonDown(0))
+        // Press 'X ': Create Object
+        if(Input.GetKeyDown(KeyCode.X))
         {
             objectRotation = 0;
             CreateObject();
         }
 
-        // Left click release
+        // Press 'Z': Delete
+        // You can't move object which doesn't have CreatedObject script.
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            if(pointingObjectScript == null)
+            {
+                Debug.LogWarning("Can't destroy: This object was made by default.");
+                return;
+            }
+            if(pointingObjectScript.Ownership != ownershipName)
+            {
+                Debug.LogWarning("Can't destroy: This object is created by [" + pointingObjectScript.Ownership + "]");
+                return;
+            }
+
+            Destroy(selectedMovableObject);
+        }
+
+        // Right Click: Move movable object
+        // You can move object which doesn't have CreatedObject script.
         if(Input.GetMouseButtonDown(1) && selectedMovableObject != null)
         {
-            isMoving = true;
+            // If the object is created by other player: Can't move
+            if(pointingObjectScript != null && pointingObjectScript.Ownership != ownershipName)
+            {
+                Debug.LogWarning("Can't move: This object is created by [" + pointingObjectScript.Ownership + "]");
+                return;
+            }
 
-            movingObject = GetParentObject(selectedMovableObject);
+            isMoving = true;
+            movingObject = selectedMovableObject;
             movingObjectRigidbody = movingObject.GetComponent<Rigidbody>();
 
             // Set layer
@@ -166,7 +235,7 @@ public class ObjectEditor : MonoBehaviour
             }
         }
 
-        // Right Click: Move movable object
+        // Right click release: stop moving object
         if(Input.GetMouseButtonUp(1) && isMoving == true)
         {
             isMoving = false;
@@ -179,18 +248,9 @@ public class ObjectEditor : MonoBehaviour
             }
             movingObject = null;
         }
-
-        // Right click release: stop moving object
-        if(movingObject != null && Input.mouseScrollDelta != Vector2.zero)
-        {
-            objectRotation += Input.mouseScrollDelta.y * Time.deltaTime * rotationAmount;
-        }
-
         if(isMoving == true)
         {
             MoveObject();
         }
-
-        isThrow = Input.GetKey(KeyCode.LeftShift);
     }
 }
