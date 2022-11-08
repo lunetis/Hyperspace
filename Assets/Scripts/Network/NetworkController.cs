@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +16,8 @@ public class NetworkController : MonoBehaviourPunCallbacks
     {
         Debug.Log("Now connected to " + PhotonNetwork.CloudRegion + "server");
     }
-    // Update is called once per frame
-    void Update()
+    public override void OnDisconnected(DisconnectCause cause)
     {
-        
+        print("Disconnected from server for reason " + cause.ToString());
     }
 }

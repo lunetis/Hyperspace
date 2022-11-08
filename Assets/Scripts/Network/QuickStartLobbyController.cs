@@ -17,14 +17,16 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         quickStartButton.SetActive(true);
+        //QuickStart();
+        Debug.Log("Connected to master");
     }
 
     public void QuickStart()
     {
+        Debug.Log("Quick start");
         quickStartButton.SetActive(false);
         quickCancelButton.SetActive(true);
         PhotonNetwork.JoinRandomRoom();
-        Debug.Log("Quick start");
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
