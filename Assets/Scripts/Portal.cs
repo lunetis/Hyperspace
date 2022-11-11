@@ -10,4 +10,12 @@ public class Portal : MonoBehaviour
             other.gameObject.GetComponent<MoveScript>()?.ShowUI();
         }
     }
+
+    private void OnTriggerExit(Collider other) {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            other.gameObject.GetComponent<MoveScript>()?.HideUI();
+        }
+    }
+    
 }

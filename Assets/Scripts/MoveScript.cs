@@ -29,6 +29,11 @@ public class MoveScript : MonoBehaviour
         // Play here
         Debug.Log("Portal Entered");
     }
+
+    public void HideUI()
+    {
+        Debug.Log("Portal Leaved");
+    }
  
     // Start is called before the first frame update
     void Start()
