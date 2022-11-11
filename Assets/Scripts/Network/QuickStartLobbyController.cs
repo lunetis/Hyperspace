@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class QuickStartLobbyController : MonoBehaviourPunCallbacks
 {
@@ -24,8 +25,8 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     public void QuickStart()
     {
         Debug.Log("Quick start");
-        quickStartButton.SetActive(false);
-        quickCancelButton.SetActive(true);
+        quickStartButton.GetComponent<Button>().interactable = false;
+        quickCancelButton.GetComponent<Button>().interactable = true;
         PhotonNetwork.JoinRandomRoom();
     }
 
@@ -40,6 +41,9 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         Debug.Log("Creating room now");
         int randomRoomNumber = Random.Range(0,10000);
         RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
+        roomOps.CleanupCacheOnLeave = false;
+
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.CreateRoom("Room" + randomRoomNumber, roomOps);
         Debug.Log(randomRoomNumber);
     }
@@ -52,8 +56,8 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
 
     public void QuickCancel()
     {
-        quickCancelButton.SetActive(false);
-        quickStartButton.SetActive(true);
+        quickStartButton.GetComponent<Button>().interactable = true;
+        quickCancelButton.GetComponent<Button>().interactable = false;
         PhotonNetwork.LeaveRoom();
     }
 }

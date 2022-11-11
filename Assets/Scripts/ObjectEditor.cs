@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+using Photon.Pun;
 
 public class ObjectEditor : MonoBehaviour
 {
@@ -48,7 +50,11 @@ public class ObjectEditor : MonoBehaviour
     void CreateObject()
     {
         if(objectIndex >= creatableObjects.Count || objectIndex < 0) return;
-        GameObject obj = Instantiate(creatableObjects[objectIndex], debugObject.transform.position, Quaternion.identity);
+        // GameObject obj = Instantiate(creatableObjects[objectIndex], debugObject.transform.position, Quaternion.identity);
+
+        GameObject obj = PhotonNetwork.Instantiate(
+            Path.Combine("PhotonPrefabs", creatableObjects[objectIndex].name),
+            debugObject.transform.position, Quaternion.identity);
 
         if(isThrow == true)
         {

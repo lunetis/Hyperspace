@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveScript : MonoBehaviour
+using Photon.Pun;
+
+public class MoveScript : MonoBehaviourPunCallbacks
 {
     public CharacterController controller;
     public float Speed;
@@ -23,17 +23,6 @@ public class MoveScript : MonoBehaviour
         get { return rotation; }
     }
 
-
-    public void ShowUI()
-    {
-        // Play here
-        Debug.Log("Portal Entered");
-    }
-
-    public void HideUI()
-    {
-        Debug.Log("Portal Leaved");
-    }
  
     // Start is called before the first frame update
     void Start()
@@ -46,7 +35,7 @@ public class MoveScript : MonoBehaviour
         rotation = transform.localRotation.eulerAngles;
         rotation.x = 0;
 
-        Cursor.lockState = CursorLockMode.Confined;
+        // Cursor.lockState = CursorLockMode.Confined;
     }
 
     // Update is called once per frame
