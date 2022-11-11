@@ -22,10 +22,6 @@ public class SlideSettingsUIController : MonoBehaviour
     [HideInInspector]
     public PresentationData selectedData;
 
-
-    public EmoteDropdown emoteDropdown;
-    
-    
     // Used in init, resize
     float slotHeight = 0;
     float contentsHeight = 0;
@@ -109,8 +105,6 @@ public class SlideSettingsUIController : MonoBehaviour
         
         selectedSlot = slotTransform;
         selectedData = data;
-
-        emoteDropdown.SetSelectedDropdown(data);
     }
 
 

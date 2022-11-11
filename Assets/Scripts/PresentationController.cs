@@ -59,7 +59,7 @@ public class PresentationController : MonoBehaviour // : MonoBehaviourPunCallbac
     {
         // Filter: png, jpg
         var paths = Directory.EnumerateFiles(folderPath, "*.*", SearchOption.TopDirectoryOnly);
-        return paths.Where(s => s.EndsWith(".png") || s.EndsWith(".PNG") || s.EndsWith(".jpg") || s.EndsWith(".mp4"));
+        return paths.Where(s => s.EndsWith(".png") || s.EndsWith(".PNG") || s.EndsWith(".jpg"));
     }
 
 
@@ -130,7 +130,7 @@ public class PresentationController : MonoBehaviour // : MonoBehaviourPunCallbac
         }
 
         slidePaths = GetSlidesFromFolder(path).ToArray<string>();
-        Debug.Log(slidePaths.Length + " png/jpg/mp4 files were found.");
+        Debug.Log(slidePaths.Length + " png/jpg files were found.");
 
         // No images found
         if(slidePaths.Length == 0)
