@@ -203,6 +203,7 @@ public class PresentationController : MonoBehaviour // : MonoBehaviourPunCallbac
 
     void ShowSlide()
     {
+        if(maxIndex == -1) return;
         // Set Buttons
         prevSlideButton.interactable = (index != 0);
         nextSlideButton.interactable = (index != maxIndex);
