@@ -14,8 +14,8 @@ TagManager:
   - Ground
   - MovableObject
   - MovingObject
-  - 
-  - 
+  - Portal
+  - Player
   - 
   - 
   - 

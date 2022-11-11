@@ -22,6 +22,13 @@ public class MoveScript : MonoBehaviour
     {
         get { return rotation; }
     }
+
+
+    public void ShowUI()
+    {
+        // Play here
+        Debug.Log("Portal Entered");
+    }
  
     // Start is called before the first frame update
     void Start()
