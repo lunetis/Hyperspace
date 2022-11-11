@@ -52,9 +52,11 @@ public class ObjectEditor : MonoBehaviour
         if(objectIndex >= creatableObjects.Count || objectIndex < 0) return;
         // GameObject obj = Instantiate(creatableObjects[objectIndex], debugObject.transform.position, Quaternion.identity);
 
-        GameObject obj = PhotonNetwork.Instantiate(
+        GameObject obj = PhotonNetwork.InstantiateRoomObject(
             Path.Combine("PhotonPrefabs", creatableObjects[objectIndex].name),
             debugObject.transform.position, Quaternion.identity);
+
+        Debug.Log(obj);
 
         if(isThrow == true)
         {

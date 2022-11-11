@@ -41,7 +41,6 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         Debug.Log("Creating room now");
         int randomRoomNumber = Random.Range(0,10000);
         RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
-        roomOps.CleanupCacheOnLeave = false;
 
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.CreateRoom("Room" + randomRoomNumber, roomOps);
