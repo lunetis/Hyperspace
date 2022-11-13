@@ -7,8 +7,8 @@ using TMPro;
 using System.Linq;
 using SFB;
 
-// using Photon.Pun;
-// using Photon.Realtime;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class PresentationData
 {    
@@ -16,7 +16,7 @@ public class PresentationData
     public int slideEmoteIndex = 0;
 }
 
-public class PresentationController : MonoBehaviour // : MonoBehaviourPunCallbacks
+public class PresentationController : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     MeshRenderer screenRenderer;
@@ -39,7 +39,7 @@ public class PresentationController : MonoBehaviour // : MonoBehaviourPunCallbac
 
     public bool isReady = false;
 
-    // public PhotonView pv;
+    public PhotonView pv;
 
 
 
@@ -66,13 +66,13 @@ public class PresentationController : MonoBehaviour // : MonoBehaviourPunCallbac
     // Start is called before the first frame update
     void Start()
     {
-        // if(PresentationController.IsHost() == false)
-        // {
-        //     presenterUI.SetActive(false);
-        //     // Request current slide if guest
-        //     StartCoroutine(RequestSlideData());
-        //     return;
-        // }
+        if(PresentationController.IsHost() == false)
+        {
+            presenterUI.SetActive(false);
+            // Request current slide if guest
+            StartCoroutine(RequestSlideData());
+            return;
+        }
 
         slideText.text = "Press \"Open Folder\" to import";
 
@@ -248,32 +248,31 @@ public class PresentationController : MonoBehaviour // : MonoBehaviourPunCallbac
     }
     
 
-    // Photon functions
-    // IEnumerator RequestSlideData()
-    // {
-    //     while(PhotonNetwork.NetworkClientState != ClientState.Joined)
-    //     {
-    //         yield return null;
-    //     }
-    //     pv.RPC("SendTextureToClient", RpcTarget.MasterClient);
-    // }
+    IEnumerator RequestSlideData()
+    {
+        while(PhotonNetwork.NetworkClientState != ClientState.Joined)
+        {
+            yield return null;
+        }
+        pv.RPC("SendTextureToClient", RpcTarget.MasterClient);
+    }
 
-    // [PunRPC]
-    // void SendTextureToClient()
-    // {
-    //     if(IsHost() == true)
-    //     {
-    //         pv.RPC("ReceiveTexture", RpcTarget.Others, presentationDataList[index].slideTexture.EncodeToPNG());
-    //     }
-    // }
+    [PunRPC]
+    void SendTextureToClient()
+    {
+        if(IsHost() == true)
+        {
+            pv.RPC("ReceiveTexture", RpcTarget.Others, presentationDataList[index].slideTexture.EncodeToPNG());
+        }
+    }
 
-    // [PunRPC]
-    // void ReceiveTexture(byte[] receivedByte)
-    // {
-    //     var receivedTexture = new Texture2D(1, 1);
-    //     receivedTexture.LoadImage(receivedByte);
-    //     ShowSlideWithTexture(receivedTexture);
-    // }
+    [PunRPC]
+    void ReceiveTexture(byte[] receivedByte)
+    {
+        var receivedTexture = new Texture2D(1, 1);
+        receivedTexture.LoadImage(receivedByte);
+        ShowSlideWithTexture(receivedTexture);
+    }
 
     // Warning: Video is not supported
     void ShowSlideWithTexture(Texture2D texture)

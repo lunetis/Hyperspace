@@ -14,6 +14,7 @@ public class Portal : MonoBehaviour
             {
                 Debug.Log("Portal Entered + " + levelIndex);
                 PhotonNetwork.Destroy(other.gameObject);
+
                 PhotonNetwork.LoadLevel(levelIndex);
             }
         }

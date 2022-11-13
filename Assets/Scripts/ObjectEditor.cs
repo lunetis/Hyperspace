@@ -28,7 +28,9 @@ public class ObjectEditor : MonoBehaviour
 
 
     // Object moving
+    [HideInInspector]
     public GameObject selectedMovableObject;
+    [HideInInspector]
     public GameObject movingObject;
     bool isMoving;
 
@@ -46,17 +48,23 @@ public class ObjectEditor : MonoBehaviour
     public GameObject debugObject;
     Material debugMaterial;
 
+    public PhotonView pv;
+
 
     void CreateObject()
     {
         if(objectIndex >= creatableObjects.Count || objectIndex < 0) return;
         // GameObject obj = Instantiate(creatableObjects[objectIndex], debugObject.transform.position, Quaternion.identity);
 
-        GameObject obj = PhotonNetwork.InstantiateRoomObject(
+        GameObject obj = PhotonNetwork.Instantiate(
             Path.Combine("PhotonPrefabs", creatableObjects[objectIndex].name),
             debugObject.transform.position, Quaternion.identity);
 
-        Debug.Log(obj);
+        if(obj == null)
+        {
+            Debug.LogWarning("Object not created!");
+            return;
+        }
 
         if(isThrow == true)
         {
@@ -125,6 +133,7 @@ public class ObjectEditor : MonoBehaviour
         pointingObjectScript = null;
 
         FindObjectOfType<CreatableObjectButtonUI>()?.SetButton(this, creatableObjects);
+        ownershipName = pv.InstantiationId.ToString();
     }
 
     void CheckObject()
@@ -185,6 +194,9 @@ public class ObjectEditor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(pv.IsMine == false) return;
+
+
         if(movingObject != null && Input.mouseScrollDelta != Vector2.zero)
         {
             objectRotation += Input.mouseScrollDelta.y * Time.deltaTime * rotationAmount;
