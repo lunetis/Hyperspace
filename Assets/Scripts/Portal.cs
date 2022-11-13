@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class Portal : MonoBehaviour
 {
     public int levelIndex;
+    
+    [SerializeField]
+    private int RoomSize = 10;
 
     private void OnTriggerEnter(Collider other) {
         if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
@@ -14,8 +18,12 @@ public class Portal : MonoBehaviour
             {
                 Debug.Log("Portal Entered + " + levelIndex);
                 PhotonNetwork.Destroy(other.gameObject);
+                
+                Debug.Log("Creating room now");
+                RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
 
-                PhotonNetwork.LoadLevel(levelIndex);
+                TypedLobby typedLobby = new TypedLobby("Lobby", LobbyType.Default);
+                PhotonNetwork.JoinOrCreateRoom("Room" + levelIndex, roomOps, typedLobby);
             }
         }
     }
