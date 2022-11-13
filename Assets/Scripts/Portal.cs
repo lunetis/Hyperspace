@@ -20,10 +20,11 @@ public class Portal : MonoBehaviour
                 PhotonNetwork.Destroy(other.gameObject);
                 
                 Debug.Log("Creating room now");
-                RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
+                PhotonNetwork.LoadLevel(levelIndex);
+                // RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
 
-                TypedLobby typedLobby = new TypedLobby("Lobby", LobbyType.Default);
-                PhotonNetwork.JoinOrCreateRoom("Room" + levelIndex, roomOps, typedLobby);
+                // TypedLobby typedLobby = new TypedLobby("Lobby", LobbyType.Default);
+                // PhotonNetwork.JoinOrCreateRoom("Room" + levelIndex, roomOps, typedLobby);
             }
         }
     }
