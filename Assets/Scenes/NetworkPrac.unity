@@ -8049,6 +8049,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 424813851}
     m_Modifications:
+    - target: {fileID: 1906916029083716236, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7185185124232112656, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
       propertyPath: m_RootOrder
       value: 45
@@ -8096,6 +8100,10 @@ PrefabInstance:
     - target: {fileID: 7185185124232112657, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
       propertyPath: m_Name
       value: Desk (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022167698884121887, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
+      propertyPath: sceneViewId
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
@@ -8272,6 +8280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8795abe663edb0b498e4ac6443726f2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPosition: {fileID: 0}
 --- !u!1 &1669299931
 GameObject:
   m_ObjectHideFlags: 0
@@ -9162,6 +9171,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 424813851}
     m_Modifications:
+    - target: {fileID: 1906916029083716236, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7185185124232112656, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -9209,6 +9222,10 @@ PrefabInstance:
     - target: {fileID: 7185185124232112657, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
       propertyPath: m_Name
       value: Desk (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022167698884121887, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
+      propertyPath: sceneViewId
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
@@ -11220,6 +11237,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 424813851}
     m_Modifications:
+    - target: {fileID: 1906916029083716236, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7185185124232112656, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -11267,6 +11288,10 @@ PrefabInstance:
     - target: {fileID: 7185185124232112657, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
       propertyPath: m_Name
       value: Desk
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022167698884121887, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
+      propertyPath: sceneViewId
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c85121bffed87a46a6abb1fbae7ae9d, type: 3}
