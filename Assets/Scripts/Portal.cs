@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class Portal : MonoBehaviour
 {
@@ -17,10 +18,15 @@ public class Portal : MonoBehaviour
             if(other.GetComponent<PhotonView>()?.IsMine == true)
             {
                 Debug.Log("Portal Entered + " + levelIndex);
-                PhotonNetwork.Destroy(other.gameObject);
+                PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+                // PhotonNetwork.LeaveRoom();
+                // PhotonNetwork.Destroy(other.gameObject);
                 
                 Debug.Log("Creating room now");
+                PhotonNetwork.AutomaticallySyncScene = false;
                 PhotonNetwork.LoadLevel(levelIndex);
+
+                // SceneManager.LoadScene(levelIndex);
                 // RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
 
                 // TypedLobby typedLobby = new TypedLobby("Lobby", LobbyType.Default);

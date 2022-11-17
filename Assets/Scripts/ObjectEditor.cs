@@ -122,6 +122,8 @@ public class ObjectEditor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(pv.IsMine == false) return;
+
         movableObjectLayer = LayerMask.NameToLayer("MovableObject");
         movingObjectLayer = LayerMask.NameToLayer("MovingObject");
         layerMask = (1 << LayerMask.NameToLayer("Ground"));
