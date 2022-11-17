@@ -13,7 +13,6 @@ public class NetworkController : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.ConnectUsingSettings();
     }
-
     public override void OnConnectedToMaster()
     {
         Debug.Log("Now connected to " + PhotonNetwork.CloudRegion + "server");

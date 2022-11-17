@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class QuickStartLobbyController : MonoBehaviourPunCallbacks
 {
@@ -13,6 +14,11 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     private GameObject quickCancelButton;
     [SerializeField]
     private int RoomSize;
+    
+    [SerializeField]
+    private int multiplayerSceneIndex;
+
+    public TextMeshProUGUI Text;
 
     public override void OnConnectedToMaster()
     {
@@ -57,5 +63,30 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         quickStartButton.GetComponent<Button>().interactable = true;
         quickCancelButton.GetComponent<Button>().interactable = false;
         PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public override void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("Joined Room");
+        StartGame();
+    }
+
+    private void StartGame()
+    {
+        if(PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("Starting Game");
+            PhotonNetwork.LoadLevel(multiplayerSceneIndex);
+        }
     }
 }
