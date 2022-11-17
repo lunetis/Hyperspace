@@ -112,8 +112,8 @@ public class MoveScript : MonoBehaviourPunCallbacks
             {         
                 direction.y -= Gravity * Time.deltaTime;
             }
-        }
         
-        controller.Move(direction * Time.deltaTime);
+            controller.Move(direction * Time.deltaTime);
+        }
     }
 }
