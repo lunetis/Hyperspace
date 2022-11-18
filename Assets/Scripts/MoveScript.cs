@@ -8,6 +8,7 @@ public class MoveScript : MonoBehaviourPunCallbacks
     public CameraController cameraController;
     
     public float Speed;
+    public float RunSpeed;
     public float JumpPow;
 
     private float Gravity;
@@ -23,6 +24,11 @@ public class MoveScript : MonoBehaviourPunCallbacks
     private PhotonView pv;
 
     public float pushForce = 3;
+
+    public LowPolyAnimationScript lowPolyAnimationScript;
+
+    bool isRunning;
+
 
     public Vector3 LookRotation
     {
@@ -51,9 +57,18 @@ public class MoveScript : MonoBehaviourPunCallbacks
         Rigidbody rb = hit.collider.attachedRigidbody;
         if(rb != null && !rb.isKinematic)
         {
-            Debug.Log(hit.moveDirection);
             rb.velocity = hit.moveDirection * pushForce;
         }
+    }
+
+
+    void Animate()
+    {
+        if(lowPolyAnimationScript == null)
+            return;
+
+        lowPolyAnimationScript.speed = Input.GetAxis("Vertical") * Speed;
+        lowPolyAnimationScript.isRunning = isRunning;
     }
 
  
@@ -70,7 +85,6 @@ public class MoveScript : MonoBehaviourPunCallbacks
             cameraController = GetComponent<CameraController>();
         }
 
-        Speed = 5.0f;
         Gravity = 10.0f;
         direction = Vector3.zero;
         JumpPow = 5.0f;
@@ -110,8 +124,14 @@ public class MoveScript : MonoBehaviourPunCallbacks
             transform.rotation = localRotation;
 
             // Move
+            // Run
+            isRunning = Input.GetKey(KeyCode.LeftShift);
+            float moveSpeed = (isRunning == true) ? RunSpeed : Speed;
+
+            Debug.Log(moveSpeed);
+
             direction.x = Input.GetAxis("Horizontal") * Speed;
-            direction.z = Input.GetAxis("Vertical") * Speed;
+            direction.z = Input.GetAxis("Vertical") * moveSpeed;
             direction = controller.transform.TransformDirection(direction);
             if (controller.isGrounded)
             {
@@ -124,8 +144,24 @@ public class MoveScript : MonoBehaviourPunCallbacks
             {         
                 direction.y -= Gravity * Time.deltaTime;
             }
-        
             controller.Move(direction * Time.deltaTime);
+            
+            // Animation
+            Animate();
+
+            // Key Input
+            if(Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                lowPolyAnimationScript.SetMotion(1);
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                lowPolyAnimationScript.SetMotion(2);
+            }
+            if(Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                lowPolyAnimationScript.SetMotion(3);
+            }
         }
     }
 }
