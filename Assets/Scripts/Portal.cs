@@ -18,9 +18,9 @@ public class Portal : MonoBehaviour
             if(other.GetComponent<PhotonView>()?.IsMine == true)
             {
                 Debug.Log("Portal Entered + " + levelIndex);
-                PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+                //PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
                 // PhotonNetwork.LeaveRoom();
-                // PhotonNetwork.Destroy(other.gameObject);
+                PhotonNetwork.Destroy(other.gameObject);
                 
                 Debug.Log("Creating room now");
                 PhotonNetwork.AutomaticallySyncScene = false;
