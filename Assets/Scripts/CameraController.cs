@@ -11,24 +11,14 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         index = 0;
-        SetCamera();
     }
 
-    void SetCamera()
+    public void SetCamera()
     {
+        index = (index + 1) % cameras.Count;
         for(int i = 0; i < cameras.Count; i++)
         {
             cameras[i].gameObject.SetActive(index == i);
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetButtonDown("Camera"))
-        {
-            index = (index + 1) % cameras.Count;
-            SetCamera();
         }
     }
 }

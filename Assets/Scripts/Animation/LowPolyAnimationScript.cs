@@ -39,36 +39,37 @@ public class LowPolyAnimationScript : MonoBehaviour
     
     void ChangeState(State state)
     {
-        if(currentState == state)
-            return;
-
-        currentState = state;
         switch(state)
         {
             case State.IDLE:
-                animator.CrossFade("Male_Idle", 0.3f);
+                if(currentState == state) return;
+                animator.SetTrigger("Idle");
                 break;
 
             case State.WALK:
-                animator.CrossFade("Male_Walk", 0.3f);
+                animator.SetBool("IsRunning", false);
                 break;
 
             case State.RUN:
-                animator.CrossFade("Male_Run", 0.3f);
+                animator.SetBool("IsRunning", true);
                 break;
 
             case State.SIT:
-                animator.CrossFade("Male_Sit", 0.3f);
+                if(currentState == state) return;
+                animator.SetTrigger("Sit");
                 break;
 
             case State.DANCING:
-                animator.CrossFade("Male_Dancing", 0.3f);
+                if(currentState == state) return;
+                animator.SetTrigger("Dancing");
                 break;
 
             case State.CARRY:
-                animator.CrossFade("Male_Carry", 0.3f);
+                // animator.CrossFade("Male_Carry", 0.3f);
                 break;
         }
+
+        currentState = state;
     }
 
     public void SetMotion(int keyCode)
@@ -87,15 +88,17 @@ public class LowPolyAnimationScript : MonoBehaviour
         }
     }
 
-    void Animate()
+    public void Animate(float speed, bool isRunning)
     {
         animator.speed = 1;
+        this.isRunning = isRunning;
+
+        animator.SetFloat("Speed", speed);
         if(speed == 0)
         {
             if(isStanding == false)
             {
                 isStanding = true;
-                ChangeState(State.IDLE);
             }
         }
         else
@@ -118,11 +121,7 @@ public class LowPolyAnimationScript : MonoBehaviour
     void Start()
     {
         currentState = State.IDLE;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Animate();
+        isStanding = true;
+        isRunning = false;
     }
 }

@@ -62,13 +62,12 @@ public class MoveScript : MonoBehaviourPunCallbacks
     }
 
 
-    void Animate()
+    void Animate(float moveSpeed)
     {
         if(lowPolyAnimationScript == null)
             return;
 
-        lowPolyAnimationScript.speed = Input.GetAxis("Vertical") * Speed;
-        lowPolyAnimationScript.isRunning = isRunning;
+        lowPolyAnimationScript.Animate(moveSpeed, isRunning);
     }
 
  
@@ -128,10 +127,11 @@ public class MoveScript : MonoBehaviourPunCallbacks
             isRunning = Input.GetKey(KeyCode.LeftShift);
             float moveSpeed = (isRunning == true) ? RunSpeed : Speed;
 
-            Debug.Log(moveSpeed);
-
             direction.x = Input.GetAxis("Horizontal") * Speed;
             direction.z = Input.GetAxis("Vertical") * moveSpeed;
+
+            // This movespeed will be passed to Animate()
+            moveSpeed = Mathf.Max(Mathf.Abs(direction.x), Mathf.Abs(direction.z));
             direction = controller.transform.TransformDirection(direction);
             if (controller.isGrounded)
             {
@@ -147,7 +147,7 @@ public class MoveScript : MonoBehaviourPunCallbacks
             controller.Move(direction * Time.deltaTime);
             
             // Animation
-            Animate();
+            Animate(moveSpeed);
 
             // Key Input
             if(Input.GetKeyDown(KeyCode.Alpha1))
@@ -161,6 +161,12 @@ public class MoveScript : MonoBehaviourPunCallbacks
             if(Input.GetKeyDown(KeyCode.Alpha3))
             {
                 lowPolyAnimationScript.SetMotion(3);
+            }
+
+            // Camera
+            if(Input.GetButtonDown("Camera"))
+            {
+                cameraController.SetCamera();
             }
         }
     }
