@@ -265,7 +265,7 @@ MonoBehaviour:
   throwForce: 10
   raycastOrigin: {fileID: 7449929126260627814}
   moveScript: {fileID: 7449929127397176556}
-  raycastDistance: 3
+  raycastDistance: 2
   selectedMovableObject: {fileID: 0}
   movingObject: {fileID: 0}
   rotationAmount: 2000
@@ -340,6 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 7449929127397176559}
+  cameraController: {fileID: 0}
   Speed: 3
   JumpPow: 3
   mouseSensitivity: 600

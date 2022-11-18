@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -4042674113771969214}
   - component: {fileID: -2282876981328255276}
   m_Layer: 7
-  m_Name: CHAIR_Folding
+  m_Name: Chair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -2282876981328255276}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

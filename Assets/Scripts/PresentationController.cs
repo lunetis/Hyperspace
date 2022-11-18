@@ -82,10 +82,10 @@ public class PresentationController : MonoBehaviourPunCallbacks
             SetDataFromSelectScene();
         }
         
-        // if(pv == null)
-        // {
-        //     pv = GetComponent<PhotonView>();
-        // }
+        if(pv == null)
+        {
+            pv = GetComponent<PhotonView>();
+        }
     }
 
 
@@ -106,11 +106,6 @@ public class PresentationController : MonoBehaviourPunCallbacks
             {
                 ShowNextSlide();
             }
-        }
-        
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            ShowNextSlide();
         }
     }
 
