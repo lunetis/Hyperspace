@@ -248,6 +248,7 @@ MonoBehaviour:
   mouseSensitivity: 600
   clampAngle: 80
   cameraPivot: {fileID: 3645222372852416173}
+  pushForce: 2
 --- !u!54 &7868338934185518777
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -466,7 +467,7 @@ MonoBehaviour:
   throwForce: 10
   raycastOrigin: {fileID: 3645222372852416173}
   moveScript: {fileID: 3171146796527540515}
-  raycastDistance: 3
+  raycastDistance: 2
   selectedMovableObject: {fileID: 0}
   movingObject: {fileID: 0}
   rotationAmount: 2000

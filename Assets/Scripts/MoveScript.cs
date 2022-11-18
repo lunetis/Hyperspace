@@ -22,9 +22,38 @@ public class MoveScript : MonoBehaviourPunCallbacks
 
     private PhotonView pv;
 
+    public float pushForce = 3;
+
     public Vector3 LookRotation
     {
         get { return rotation; }
+    }
+
+    void AttachCameraPivot()
+    {
+        Transform mapCameraPivot = FindObjectOfType<MapController>().cameraPivot;
+        mapCameraPivot.parent = cameraPivot;
+        mapCameraPivot.transform.localPosition = Vector3.zero;
+
+        foreach(Transform child in mapCameraPivot)
+        {
+            Camera cam = child.GetComponent<Camera>();
+            if(cam != null)
+            {
+                cameraController.cameras.Add(cam);
+            }
+        }
+    }
+
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody rb = hit.collider.attachedRigidbody;
+        if(rb != null && !rb.isKinematic)
+        {
+            Debug.Log(hit.moveDirection);
+            rb.velocity = hit.moveDirection * pushForce;
+        }
     }
 
  
@@ -57,23 +86,6 @@ public class MoveScript : MonoBehaviourPunCallbacks
         else
         {
             controller.enabled = false;
-        }
-    }
-
-
-    void AttachCameraPivot()
-    {
-        Transform mapCameraPivot = FindObjectOfType<MapController>().cameraPivot;
-        mapCameraPivot.parent = cameraPivot;
-        mapCameraPivot.transform.localPosition = Vector3.zero;
-
-        foreach(Transform child in mapCameraPivot)
-        {
-            Camera cam = child.GetComponent<Camera>();
-            if(cam != null)
-            {
-                cameraController.cameras.Add(cam);
-            }
         }
     }
 

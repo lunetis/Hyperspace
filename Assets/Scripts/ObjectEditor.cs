@@ -262,6 +262,14 @@ public class ObjectEditor : MonoBehaviour
         {
             isMoving = false;
             
+            if(isThrow == true)
+            {
+                Rigidbody rigidbody = movingObject.GetComponent<Rigidbody>();
+                if(rigidbody == null) return;
+
+                rigidbody.velocity = raycastOrigin.forward * throwForce;
+            }
+            
             // Set layer
             movingObject.layer = movableObjectLayer;
             foreach(Transform child in movingObject.transform)

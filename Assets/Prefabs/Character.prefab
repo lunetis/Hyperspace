@@ -346,6 +346,7 @@ MonoBehaviour:
   mouseSensitivity: 600
   clampAngle: 80
   cameraPivot: {fileID: 7449929126260627814}
+  pushForce: 1
 --- !u!54 &7449929127397176554
 Rigidbody:
   m_ObjectHideFlags: 0

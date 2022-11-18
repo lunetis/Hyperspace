@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1076888153524471403}
   - component: {fileID: 6223174150610246084}
   - component: {fileID: 6171904428272570566}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SM_Toy_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1581076150795937726}
   m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
   m_LocalPosition: {x: -56.64891, y: 9.3, z: -17.673506}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
