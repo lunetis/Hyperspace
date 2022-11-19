@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using Photon.Pun;
+using System;
 
 public class ObjectEditor : MonoBehaviour
 {
@@ -141,7 +142,7 @@ public class ObjectEditor : MonoBehaviour
     void CheckObject()
     {
         RaycastHit hit;
-        GameObject currentPointingObject;
+        GameObject currentPointingObject = null;
         Physics.Raycast(raycastOrigin.position, raycastOrigin.forward, out hit, raycastDistance, layerMask);
         // Debug.DrawRay(raycastOrigin.position, raycastOrigin.position + raycastOrigin.forward * raycastDistance, Color.red);
 
@@ -161,9 +162,17 @@ public class ObjectEditor : MonoBehaviour
         }
         else
         {
-            debugObject.transform.position = raycastOrigin.position + raycastOrigin.forward * raycastDistance;
-            debugMaterial.color = Color.red;
-            currentPointingObject = null;
+            // NullReferenceException occurs when the player exits
+            try
+            {
+                debugObject.transform.position = raycastOrigin.position + raycastOrigin.forward * raycastDistance;
+                debugMaterial.color = Color.red;
+                currentPointingObject = null;
+            }
+            catch(NullReferenceException e)
+            {
+                PhotonNetwork.Destroy(pv);
+            }
         }
 
         // Need to refresh

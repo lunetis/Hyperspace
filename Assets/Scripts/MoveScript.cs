@@ -1,6 +1,7 @@
 using UnityEngine;
 
 using Photon.Pun;
+using Photon.Realtime;
 
 public class MoveScript : MonoBehaviourPunCallbacks
 {
@@ -169,5 +170,11 @@ public class MoveScript : MonoBehaviourPunCallbacks
                 cameraController.SetCamera();
             }
         }
+    }
+
+    private void OnApplicationQuit() {
+        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+        PhotonNetwork.Destroy(pv);
+        PhotonNetwork.LeaveRoom();
     }
 }
