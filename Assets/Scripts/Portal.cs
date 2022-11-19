@@ -26,17 +26,8 @@ public class Portal : MonoBehaviourPunCallbacks
                 PhotonNetwork.Destroy(other.gameObject);
 
                 roomCode = (string)hashTable["roomCode"];
-
-                // roomCode = hashTable["roomCode"].ToString();
-                Debug.Log("Leave room now");
                 isActivePortal = true;
                 PhotonNetwork.LeaveRoom();
-                //PhotonNetwork.AutomaticallySyncScene = false;
-                // SceneManager.LoadScene(levelIndex);
-                // RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
-
-                // TypedLobby typedLobby = new TypedLobby("Lobby", LobbyType.Default);
-                // PhotonNetwork.JoinOrCreateRoom("Room" + levelIndex, roomOps, typedLobby);
             }
         }
     }
@@ -46,40 +37,36 @@ public class Portal : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom(){
         if(isActivePortal == false) return;
-        Debug.Log("OnLeftRoom");
         // Wait for OnConnectedToMaster
     }
 
     public override void OnConnectedToMaster()
     {
         if(isActivePortal == false) return;
-        //QuickStart();
-        Debug.Log("Connected to master");
 
         RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
         roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode}};
-
-        Debug.Log("JoinOrCreateRoom : " + "Room" + levelIndex + roomCode);
-        PhotonNetwork.JoinOrCreateRoom("Room" + levelIndex + roomCode, roomOps,null);
+        
+        // 플레이어가 방을 나갈 때 그 플레이어가 생성한 오브젝트 삭제 방지
+        roomOps.CleanupCacheOnLeave = false;
+        PhotonNetwork.JoinOrCreateRoom(Hyperspace.Utils.GetRoomCode(levelIndex, roomCode), roomOps,null);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         if(isActivePortal == false) return;
-        Debug.Log("Failed to join room... trying again");
-        PhotonNetwork.JoinRoom("Room" + levelIndex + roomCode);
+        PhotonNetwork.JoinRoom(Hyperspace.Utils.GetRoomCode(levelIndex, roomCode));
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         if(isActivePortal == false) return;
         RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
-        Debug.Log("Failed to create room... trying again");
-        PhotonNetwork.CreateRoom("Room" + levelIndex + roomCode, roomOps, null);
+        PhotonNetwork.CreateRoom(Hyperspace.Utils.GetRoomCode(levelIndex, roomCode), null);
     }
     public override void OnJoinedRoom()
     {
         if(isActivePortal == false) return;
-        Debug.Log("Joined <Room" +levelIndex + roomCode+">");
+        Debug.Log("Joined <" + Hyperspace.Utils.GetRoomCode(levelIndex, roomCode) +">");
         
         if(PhotonNetwork.IsMasterClient)
         {
