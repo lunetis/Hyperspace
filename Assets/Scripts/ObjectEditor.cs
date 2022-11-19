@@ -231,7 +231,8 @@ public class ObjectEditor : MonoBehaviour
                 return;
             }
 
-            Destroy(selectedMovableObject);
+            //Destroy(selectedMovableObject);
+            PhotonNetwork.Destroy(selectedMovableObject.GetComponent<PhotonView>());
         }
 
         // Right Click: Move movable object
