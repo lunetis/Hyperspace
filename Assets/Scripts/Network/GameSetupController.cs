@@ -18,6 +18,11 @@ public class GameSetupController : MonoBehaviour
         Debug.Log("Creating Player");
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs","PhotonPlayer"),spawnPosition.position,Quaternion.identity);
     }
+
+    public void CreatePlayer(string prefabName)
+    {
+        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", prefabName),spawnPosition.position,Quaternion.identity);
+    }
     public void ExitButton()
     {
         PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
