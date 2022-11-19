@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameSetupController : MonoBehaviour
 {
     public Transform spawnPosition;
+
     void Start()
     {
         CreatePlayer();
@@ -17,8 +18,10 @@ public class GameSetupController : MonoBehaviour
         Debug.Log("Creating Player");
         PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs","PhotonPlayer"),spawnPosition.position,Quaternion.identity);
     }
-    void Update()
+    public void ExitButton()
     {
-        
+        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel(0);
     }
 }
