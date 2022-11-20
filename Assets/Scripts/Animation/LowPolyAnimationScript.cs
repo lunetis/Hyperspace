@@ -72,6 +72,12 @@ public class LowPolyAnimationScript : MonoBehaviour
         currentState = state;
     }
 
+
+    public void SetCarry(bool isCarrying)
+    {
+        animator.SetBool("IsCarrying", isCarrying);
+    }
+
     public void SetMotion(int keyCode)
     {
         switch(keyCode)

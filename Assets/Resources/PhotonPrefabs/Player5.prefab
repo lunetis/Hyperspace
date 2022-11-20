@@ -700,24 +700,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 360493868997038104, guid: e06a546890cc40145b4a6c617103749d, type: 3}
   m_PrefabInstance: {fileID: 7738795706997657497}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5055418693655072192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7954767555723239297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc8916aed7973c479efb1796ca298d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 5014113859246783016}
-  speed: 0
-  maxWalkSpeed: 2
-  maxRunSpeed: 4
-  isRunning: 0
-  isCarrying: 0
 --- !u!114 &4444299841233288794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -736,3 +718,21 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!114 &5055418693655072192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7954767555723239297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfc8916aed7973c479efb1796ca298d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 5014113859246783016}
+  speed: 0
+  maxWalkSpeed: 2
+  maxRunSpeed: 4
+  isRunning: 0
+  isCarrying: 0

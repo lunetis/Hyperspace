@@ -265,6 +265,8 @@ public class ObjectEditor : MonoBehaviour
             {
                 child.gameObject.layer = movingObjectLayer;
             }
+
+            moveScript.lowPolyAnimationScript.SetCarry(true);
         }
 
         // Right click release: stop moving object
@@ -287,6 +289,8 @@ public class ObjectEditor : MonoBehaviour
                 child.gameObject.layer = movableObjectLayer;
             }
             movingObject = null;
+            
+            moveScript.lowPolyAnimationScript.SetCarry(false);
         }
         if(isMoving == true)
         {
