@@ -23,6 +23,7 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
 
     public TextMeshProUGUI Text;
     string roomCode;
+    string playerPrefabName;
     
 
     public override void OnConnectedToMaster()
@@ -43,14 +44,11 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         enterRoomFlag=false;
 
         roomCode = Text.text.Trim();
-        
-        RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)roomSize};
-        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode}};
 
-        // 플레이어가 방을 나갈 때 그 플레이어가 생성한 오브젝트 삭제 방지
-        roomOps.CleanupCacheOnLeave = false;
-        PhotonNetwork.JoinOrCreateRoom(Hyperspace.Utils.GetRoomCode(firstSceneIndex, roomCode), roomOps,null);
+        SetPlayerCustomProperties();
+        CreateRoom();
     }
+
     public void EnterRoomButton()
     {
         createRoomButton.GetComponent<Button>().interactable = false;
@@ -60,8 +58,10 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
 
         roomCode = Text.text.Trim();
         
+        SetPlayerCustomProperties();
         PhotonNetwork.JoinRoom(Hyperspace.Utils.GetRoomCode(firstSceneIndex, roomCode));
     }
+
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         if(enterRoomFlag==true){
@@ -71,10 +71,30 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         }
         PhotonNetwork.JoinRoom(Hyperspace.Utils.GetRoomCode(firstSceneIndex, roomCode));
     }
+
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
+        SetPlayerCustomProperties();
+        CreateRoom();
+    }
+
+
+    // 플레이어가 선택한 캐릭터 정보 저장
+    void SetPlayerCustomProperties()
+    {
+        // 일단 랜덤으로 생성
+        playerPrefabName = "Player" + Random.Range(1, 12);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName}});
+    }
+
+    void CreateRoom()
+    {
         RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)roomSize};
-        PhotonNetwork.CreateRoom(Hyperspace.Utils.GetRoomCode(firstSceneIndex, roomCode), roomOps,null);
+        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode}};
+
+        // 플레이어가 방을 나갈 때 그 플레이어가 생성한 오브젝트 삭제 방지
+        roomOps.CleanupCacheOnLeave = false;
+        PhotonNetwork.JoinOrCreateRoom(Hyperspace.Utils.GetRoomCode(firstSceneIndex, roomCode), roomOps,null);
     }
 
     public void QuickCancel()
