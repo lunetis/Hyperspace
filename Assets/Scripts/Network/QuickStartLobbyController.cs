@@ -67,6 +67,9 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         if(enterRoomFlag==true){
             Debug.Log("Wrong Room Code(There is no such room");
             enterRoomFlag=false;
+            createRoomButton.GetComponent<Button>().interactable = true;
+            enterRoomButton.GetComponent<Button>().interactable = true;
+            quickCancelButton.GetComponent<Button>().interactable = true;
             return ;
         }
         PhotonNetwork.JoinRoom(Hyperspace.Utils.GetRoomCode(firstSceneIndex, roomCode));
