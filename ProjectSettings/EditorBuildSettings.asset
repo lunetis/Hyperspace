@@ -12,13 +12,13 @@ EditorBuildSettings:
     path: Assets/Scenes/Extra/NetworkPrac.unity
     guid: 9556e455f86728b4c953ad83873b04be
   - enabled: 1
-    path: Assets/Scenes/UIDesign.unity
+    path: Assets/Scenes/Intro.unity
     guid: 4d5e79b08b71c874a9ef72fde27b5176
   - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: 704a9176049a16a4c96783c89ace6660
   - enabled: 1
-    path: Assets/Scenes/lecture room.unity
+    path: Assets/Scenes/LectureRoom.unity
     guid: 96a6c91143251134891d8099e4004120
   - enabled: 1
     path: Assets/Scenes/PlayRoom.unity
