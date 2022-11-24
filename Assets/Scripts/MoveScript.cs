@@ -18,7 +18,7 @@ public class MoveScript : MonoBehaviourPunCallbacks
     public float mouseSensitivity;
 
     private Vector3 rotation;
-    public float clampAngle;
+    float clampAngle = 30;
 
     public Transform cameraPivot;
 
