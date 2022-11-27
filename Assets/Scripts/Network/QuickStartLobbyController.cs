@@ -21,10 +21,13 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     [SerializeField]
     private int firstSceneIndex;
 
+   
+
     public TextMeshProUGUI Text;
+    public TextMeshProUGUI CharacterText;
     string roomCode;
     string playerPrefabName;
-    
+    string temp;
 
     public override void OnConnectedToMaster()
     {
@@ -86,6 +89,9 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     void SetPlayerCustomProperties()
     {
         // 일단 랜덤으로 생성
+       // CharacterText = Gameobject.FindWithTag("CustomPlayer");
+       // temp = CharacterText.text.trim();
+       // temp = temp.Substring(temp.length() - 1, temp.length());
         playerPrefabName = "Player" + Random.Range(1, 12);
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName}});
     }
