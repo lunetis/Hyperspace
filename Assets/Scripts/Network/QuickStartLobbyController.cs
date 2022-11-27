@@ -21,7 +21,6 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     [SerializeField]
     private int firstSceneIndex;
 
-   
 
     public TextMeshProUGUI Text;
     public TextMeshProUGUI CharacterText;
@@ -88,11 +87,7 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     // 플레이어가 선택한 캐릭터 정보 저장
     void SetPlayerCustomProperties()
     {
-        // 일단 랜덤으로 생성
-       // CharacterText = Gameobject.FindWithTag("CustomPlayer");
-       // temp = CharacterText.text.trim();
-       // temp = temp.Substring(temp.length() - 1, temp.length());
-        playerPrefabName = "Player" + Random.Range(1, 12);
+        playerPrefabName = CharacterText.text;
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName}});
     }
 

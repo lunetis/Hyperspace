@@ -3998,7 +3998,7 @@ MonoBehaviour:
   roomSize: 0
   firstSceneIndex: 1
   Text: {fileID: 1140607178}
-  CharacterText: {fileID: 0}
+  CharacterText: {fileID: 243483360}
 --- !u!4 &230000260
 Transform:
   m_ObjectHideFlags: 0

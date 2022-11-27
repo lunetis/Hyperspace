@@ -24,7 +24,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public void ChatConnectOnClick()
     {
         Debug.Log("Connecting");
-        chatClient = new ChatClient(this);
         chatClient.ChatRegion = "asia";
         chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat,PhotonNetwork.AppVersion,
          new Photon.Chat.AuthenticationValues(username));
@@ -42,17 +41,14 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     // Start is called before the first frame update
     void Start()
     {
+        chatClient = new ChatClient(this);
         if (string.IsNullOrEmpty(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat))
             Debug.Log("no CHat app ID provided");
     }
     // Update is called once per frame
     void Update()
     {
-       if (isConnected)
-       {
-            Debug.Log("Service");
-            chatClient.Service();
-       }
+       chatClient.Service();
 
        /*if(chatField.text!="" && Input.GetKey(KeyCode.Return))
        {
@@ -66,11 +62,11 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
     public void DebugReturn(DebugLevel level, string message)
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
     }
     public void OnChatStateChange(ChatState state)
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
     }
     public void OnConnected()
     {
