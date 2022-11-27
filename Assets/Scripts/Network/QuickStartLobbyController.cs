@@ -134,4 +134,9 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel(firstSceneIndex);
         }
     }
+
+    public static bool IsHost()
+    {
+        return (PhotonNetwork.MasterClient == PhotonNetwork.LocalPlayer);
+    }
 }

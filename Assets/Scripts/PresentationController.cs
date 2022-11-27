@@ -32,9 +32,7 @@ public class PresentationController : MonoBehaviourPunCallbacks
     [Header("Presentation Only Mode")]
     public RawImage keynoteRenderImage;
     
-    // [HideInInspector]
-    // public FaceController faceController;
-
+  
     public GameObject presenterUI;
 
     public bool isReady = false;
@@ -66,7 +64,7 @@ public class PresentationController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        if(PresentationController.IsHost() == false)
+        if(QuickStartLobbyController.IsHost() == false)
         {
             presenterUI.SetActive(false);
             // Request current slide if guest
@@ -219,7 +217,7 @@ public class PresentationController : MonoBehaviourPunCallbacks
 
 
         // Send Texture when changing slides
-        // SendTextureToClient();
+        SendTextureToClient();
     }
 
     Texture2D GetTextureFromImage(string imagePath)
@@ -237,11 +235,6 @@ public class PresentationController : MonoBehaviourPunCallbacks
         }
     }
 
-    public static bool IsHost()
-    {
-        return true; // QuickStartLobbyController.host == 1;
-    }
-    
 
     IEnumerator RequestSlideData()
     {
@@ -255,19 +248,21 @@ public class PresentationController : MonoBehaviourPunCallbacks
     [PunRPC]
     void SendTextureToClient()
     {
-        if(IsHost() == true)
+        if(QuickStartLobbyController.IsHost() == true && presentationDataList != null && index < presentationDataList.Count)
         {
-            pv.RPC("ReceiveTexture", RpcTarget.Others, presentationDataList[index].slideTexture.EncodeToPNG());
+            pv.RPC("ReceiveTexture", RpcTarget.Others, presentationDataList[index].slideTexture.EncodeToJPG());
         }
     }
 
     [PunRPC]
     void ReceiveTexture(byte[] receivedByte)
     {
+        Debug.Log("Receiving Texture");
         var receivedTexture = new Texture2D(1, 1);
         receivedTexture.LoadImage(receivedByte);
         ShowSlideWithTexture(receivedTexture);
     }
+
 
     // Warning: Video is not supported
     void ShowSlideWithTexture(Texture2D texture)
