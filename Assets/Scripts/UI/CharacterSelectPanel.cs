@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+               
 
 public class CharacterSelectPanel : MonoBehaviour
 {
@@ -39,10 +40,19 @@ public class CharacterSelectPanel : MonoBehaviour
         {
             Destroy(playerSpawnPosition.GetChild(0).gameObject);
         }
-        
-        
+
+
         // null에 플레이어 프리팹 등록
         GameObject playerObject = null;
+        foreach (var character in characterList)
+        {
+            if(characterName == character.name)
+            {
+                playerObject = character;
+            }
+            character.GetComponent<MoveScript>().enabled = false;
+        }
+        //GameObject playerObject = null;
 
         GameObject playerExample = Instantiate(playerObject, playerSpawnPosition.transform.position, Quaternion.identity);
         playerExample.transform.parent = playerSpawnPosition;
@@ -52,6 +62,5 @@ public class CharacterSelectPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }
