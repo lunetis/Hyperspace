@@ -50,11 +50,11 @@ public class CharacterSelectPanel : MonoBehaviour
             {
                 playerObject = character;
             }
-            character.GetComponent<MoveScript>().enabled = false;
         }
         //GameObject playerObject = null;
 
         GameObject playerExample = Instantiate(playerObject, playerSpawnPosition.transform.position, Quaternion.identity);
+        playerExample.GetComponent<MoveScript>().enabled = false;
         playerExample.transform.parent = playerSpawnPosition;
 
     }
