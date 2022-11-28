@@ -5,6 +5,7 @@ using UnityEngine;
 using Photon.Chat;
 using Photon.Pun;
 using UnityEngine.UI;
+using TMPro;
 
 public class ChatManager : MonoBehaviour, IChatClientListener
 {
@@ -20,7 +21,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         username = valueIn;
         //Debug.Log(username);
     }
-    
     public void ChatConnectOnClick()
     {
         Debug.Log("Connecting");
@@ -34,28 +34,46 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     #region General
 
     [SerializeField] GameObject chatPanel;
+    [SerializeField] TMP_InputField chatField;
+    [SerializeField] TMP_Text chatDisplay;
     string privateReceiver= "";
     string currentChat;
-    //[SerializeField] InputField chatField;
-    //[SerializeField] Text chatDisplay;
-    // Start is called before the first frame update
+
     void Start()
     {
-        chatClient = new ChatClient(this);
         if (string.IsNullOrEmpty(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat))
-            Debug.Log("no CHat app ID provided");
+            Debug.Log("no Chat app ID provided");
+        chatClient = new ChatClient(this);
     }
-    // Update is called once per frame
+
     void Update()
     {
        chatClient.Service();
 
-       /*if(chatField.text!="" && Input.GetKey(KeyCode.Return))
+       if(chatField.text!="" && Input.GetKey(KeyCode.Return))
        {
-            //SubmitPublicChatOnClick();
-            //SubmitPrivateChatOnClick();
-            ;
-       }*/
+            SendChatOnClick();
+       }
+    }
+
+    public void TypeChatOnValueChange(string valueIn)
+    {
+        currentChat=valueIn;
+    }
+
+    public void ReceiverOnValueChange(string valueIn)
+    {
+        privateReceiver=valueIn;
+    }
+    public void SendChatOnClick()
+    {
+        if(privateReceiver=="")
+            chatClient.PublishMessage("RegionChannel",currentChat);
+        
+        if(privateReceiver!="")
+            chatClient.SendPrivateMessage(privateReceiver,currentChat);
+        chatField.text="";
+        currentChat="";
     }
 
     #endregion General
@@ -83,11 +101,20 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     }
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
-        throw new System.NotImplementedException();
+        string msgs="";
+        for(int i=0;i<senders.Length;i++)
+        {
+            msgs=string.Format("{0}: {1}",senders[i], messages[i]);
+            chatDisplay.text+="\n" + msgs;
+            //Debug.Log(msgs);
+        }
     }
     public void OnPrivateMessage(string sender, object messages,string channelName)
     {
-        throw new System.NotImplementedException();
+        string msgs="";
+        msgs=string.Format("(Private) {0}: {1}",sender, messages);
+        chatDisplay.text+="\n" + msgs;
+        //Debug.Log(msgs);
     }
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
     {
@@ -95,6 +122,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     }
     public void OnSubscribed(string[] channels, bool[] results)
     {
+         Debug.Log("Subscribed");
         chatPanel.SetActive(true);
     }
      public void OnUnsubscribed(string[] channels)
