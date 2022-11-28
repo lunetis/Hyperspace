@@ -122,7 +122,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     }
     public void OnSubscribed(string[] channels, bool[] results)
     {
-         Debug.Log("Subscribed");
+        Debug.Log("Subscribed");
         chatPanel.SetActive(true);
     }
      public void OnUnsubscribed(string[] channels)
