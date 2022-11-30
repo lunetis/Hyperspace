@@ -9,14 +9,11 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class QuickStartLobbyController : MonoBehaviourPunCallbacks
 {
-    [SerializeField]
-    private GameObject createRoomButton;    
-    [SerializeField]
-    private GameObject enterRoomButton;
-    [SerializeField]
-    private GameObject quickCancelButton;
-    [SerializeField]
-    private int roomSize;
+    [SerializeField] private GameObject createRoomButton;    
+    [SerializeField] private GameObject enterRoomButton;
+    [SerializeField] private GameObject quickCancelButton;
+    [SerializeField] private int roomSize;
+    [SerializeField] string username;
     private bool enterRoomFlag;
     [SerializeField]
     private int firstSceneIndex;
@@ -28,6 +25,11 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     string playerPrefabName;
     string temp;
 
+    public void UsernameOnValueChange(string valueIn)
+    {
+        username = valueIn;
+        //Debug.Log(username);
+    }
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -48,7 +50,7 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         roomCode = Text.text.Trim();
 
         SetPlayerCustomProperties();
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName}});
+        
         
         CreateRoom();
     }
@@ -63,7 +65,6 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         roomCode = Text.text.Trim();
         
         SetPlayerCustomProperties();
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName}});
         
         PhotonNetwork.JoinRoom(Hyperspace.Utils.GetRoomCode(firstSceneIndex, roomCode));
     }
@@ -92,12 +93,18 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     void SetPlayerCustomProperties()
     {
         playerPrefabName = CharacterText.text;
+        if(username=="")
+        {
+            username="temp";
+        }
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName},{"userName",username}});
+        
     }
 
     void CreateRoom()
     {
         RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)roomSize};
-        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode},{"roomChat","Hi"}};
+        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode},{"roomChat",""}};
 
         // 플레이어가 방을 나갈 때 그 플레이어가 생성한 오브젝트 삭제 방지
         roomOps.CleanupCacheOnLeave = false;
@@ -127,6 +134,7 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Joined <" + Hyperspace.Utils.GetRoomCode(firstSceneIndex, roomCode) + ">");
+        Debug.Log(PhotonNetwork.LocalPlayer.CustomProperties["userName"].ToString());
         if(PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.LoadLevel(firstSceneIndex);
