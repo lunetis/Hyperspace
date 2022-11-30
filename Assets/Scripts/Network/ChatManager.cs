@@ -6,15 +6,17 @@ using Photon.Chat;
 using Photon.Pun;
 using UnityEngine.UI;
 using TMPro;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class ChatManager : MonoBehaviour, IChatClientListener
 {
-    #region Setup
 
     [SerializeField] GameObject joinChatButton;
     ChatClient chatClient;
     bool isConnected;
     [SerializeField] string username;
+    private Hashtable hashTable;
+    private string roomCode;
 
     public void UsernameOnValueChange(string valueIn)
     {
@@ -29,9 +31,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
          new Photon.Chat.AuthenticationValues(username));
     }
 
-    #endregion Setup
-
-    #region General
 
     [SerializeField] GameObject chatPanel;
     [SerializeField] TMP_InputField chatField;
@@ -44,6 +43,9 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         if (string.IsNullOrEmpty(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat))
             Debug.Log("no Chat app ID provided");
         chatClient = new ChatClient(this);
+        hashTable = PhotonNetwork.CurrentRoom.CustomProperties;
+        roomCode = (string)hashTable["roomCode"];
+        chatDisplay.text=(string)hashTable["roomChat"];
     }
 
     void Update()
@@ -68,15 +70,13 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     public void SendChatOnClick()
     {
         if(privateReceiver=="")
-            chatClient.PublishMessage("RegionChannel",currentChat);
+            chatClient.PublishMessage("RegionChannel"+roomCode,currentChat);
         
         if(privateReceiver!="")
             chatClient.SendPrivateMessage(privateReceiver,currentChat);
         chatField.text="";
         currentChat="";
     }
-
-    #endregion General
 
     public void DebugReturn(DebugLevel level, string message)
     {
@@ -91,7 +91,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         Debug.Log("Connected");
         isConnected=true;
         joinChatButton.SetActive(false);
-        chatClient.Subscribe(new string[] {"RegionChannel"});
+        chatClient.Subscribe(new string[] {"RegionChannel"+roomCode});
+        Debug.Log(roomCode);
         //SubToChatOnClick();
     }
     public void OnDisconnected()
@@ -106,14 +107,18 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         {
             msgs=string.Format("{0}: {1}",senders[i], messages[i]);
             chatDisplay.text+="\n" + msgs;
+            hashTable["roomChat"]+="\n" + msgs;
             //Debug.Log(msgs);
         }
+        PhotonNetwork.CurrentRoom.SetCustomProperties(hashTable);
     }
     public void OnPrivateMessage(string sender, object messages,string channelName)
     {
         string msgs="";
         msgs=string.Format("(Private) {0}: {1}",sender, messages);
         chatDisplay.text+="\n" + msgs;
+        hashTable["roomChat"]+="\n" + msgs;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(hashTable);
         //Debug.Log(msgs);
     }
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message)

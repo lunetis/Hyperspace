@@ -48,6 +48,8 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         roomCode = Text.text.Trim();
 
         SetPlayerCustomProperties();
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName}});
+        
         CreateRoom();
     }
 
@@ -61,6 +63,8 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         roomCode = Text.text.Trim();
         
         SetPlayerCustomProperties();
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName}});
+        
         PhotonNetwork.JoinRoom(Hyperspace.Utils.GetRoomCode(firstSceneIndex, roomCode));
     }
 
@@ -88,13 +92,12 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     void SetPlayerCustomProperties()
     {
         playerPrefabName = CharacterText.text;
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName}});
     }
 
     void CreateRoom()
     {
         RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)roomSize};
-        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode}};
+        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode},{"roomChat","Hi"}};
 
         // 플레이어가 방을 나갈 때 그 플레이어가 생성한 오브젝트 삭제 방지
         roomOps.CleanupCacheOnLeave = false;

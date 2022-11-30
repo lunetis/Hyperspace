@@ -12,8 +12,8 @@ public class Portal : MonoBehaviourPunCallbacks
     [SerializeField]
     private int RoomSize = 10;
     private string roomCode;
+    private string roomChat;
     private Hashtable hashTable;
-
     private bool isActivePortal;
 
     private void OnTriggerEnter(Collider other) {
@@ -26,6 +26,8 @@ public class Portal : MonoBehaviourPunCallbacks
                 PhotonNetwork.Destroy(other.gameObject);
 
                 roomCode = (string)hashTable["roomCode"];
+                
+                roomChat = (string)hashTable["roomChat"];
                 isActivePortal = true;
                 PhotonNetwork.LeaveRoom();
             }
@@ -45,7 +47,7 @@ public class Portal : MonoBehaviourPunCallbacks
         if(isActivePortal == false) return;
 
         RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
-        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode}};
+        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode},{"roomChat", roomChat}};
         
         // 플레이어가 방을 나갈 때 그 플레이어가 생성한 오브젝트 삭제 방지
         roomOps.CleanupCacheOnLeave = false;
