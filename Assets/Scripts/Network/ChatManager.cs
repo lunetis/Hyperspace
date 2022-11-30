@@ -17,13 +17,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     private Hashtable hashTable;
     private string roomCode;
 
-    public void UsernameOnValueChange(string valueIn)
-    {
-        username = valueIn;
-        //Debug.Log(username);
-    }
-
-
     [SerializeField] GameObject chatPanel;
     [SerializeField] TMP_InputField chatField;
     [SerializeField] TMP_Text chatDisplay;
