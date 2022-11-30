@@ -97,6 +97,9 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
         {
             username="temp";
         }
+        if(playerPrefabName=="Select Character")
+            playerPrefabName="Player1";
+        //Debug.Log(playerPrefabName);
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable(){{"playerPrefabName", playerPrefabName},{"userName",username}});
         
     }
