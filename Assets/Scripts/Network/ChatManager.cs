@@ -95,7 +95,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         {
             msgs=string.Format("{0}: {1}",senders[i], messages[i]);
             chatDisplay.text+="\n" + msgs;
-            hashTable["roomChat"]+="\n" + msgs;
+            if(senders[i]==username)
+                hashTable["roomChat"]+="\n" + msgs;
             //Debug.Log(msgs);
         }
         PhotonNetwork.CurrentRoom.SetCustomProperties(hashTable);

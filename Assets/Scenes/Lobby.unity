@@ -2854,7 +2854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717d5d19f2953dd48b9bb422ca176786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chatPanel: {fileID: 1561938628}
+  chatPanel: {fileID: 2129062402}
   chatField: {fileID: 1264908121}
   chatDisplay: {fileID: 550754941}
 --- !u!1 &242407457
@@ -22563,7 +22563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1561938629
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37510,7 +37510,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2129062403
 RectTransform:
   m_ObjectHideFlags: 0
