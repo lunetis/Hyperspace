@@ -93,17 +93,14 @@ public class PresentationController : MonoBehaviourPunCallbacks
         {
             return;
         }
-
-        if(Input.GetKeyDown(KeyCode.Return))
+        // [, ]
+        if(Input.GetKeyDown(KeyCode.LeftBracket))
         {
-            if(Input.GetKey(KeyCode.LeftControl))
-            {
-                ShowPrevSlide();
-            }
-            else
-            {
-                ShowNextSlide();
-            }
+            ShowPrevSlide();
+        }
+        if(Input.GetKeyDown(KeyCode.RightBracket))
+        {
+            ShowNextSlide();
         }
     }
 

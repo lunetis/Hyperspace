@@ -205,7 +205,7 @@ public class ObjectEditor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(pv.IsMine == false) return;
+        if(pv.IsMine == false || moveScript.isMovable == false) return;
 
 
         if(movingObject != null && Input.mouseScrollDelta != Vector2.zero)

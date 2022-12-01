@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public List<Camera> cameras;
-    int index;
+    public int index;
 
     // Start is called before the first frame update
     void Start()

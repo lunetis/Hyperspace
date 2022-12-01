@@ -30,6 +30,8 @@ public class MoveScript : MonoBehaviourPunCallbacks
 
     bool isRunning;
 
+    public bool isMovable;
+
 
     public Vector3 LookRotation
     {
@@ -75,6 +77,8 @@ public class MoveScript : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        isMovable = true;
+
         if(controller == null)
         {
             controller = GetComponent<CharacterController>();
@@ -106,69 +110,76 @@ public class MoveScript : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        if(pv.IsMine == true)
+        if(pv.IsMine == false) return;
+
+        // Look
+        float mouseX = (isMovable == true) ? Input.GetAxis("Mouse X") : 0;
+        float mouseY = (isMovable == true) ? -Input.GetAxis("Mouse Y") : 0;
+
+        rotation.y += mouseX * mouseSensitivity * Time.deltaTime;
+        rotation.x += mouseY * mouseSensitivity * Time.deltaTime;
+
+        if(cameraController.index == 0)
         {
-            // Look
-            float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = -Input.GetAxis("Mouse Y");
+            rotation.x = Mathf.Clamp(rotation.x, -60, 80);
+        }
+        else
+        {
+            rotation.x = Mathf.Clamp(rotation.x, -30, 80);
+        }
+        
 
-            rotation.y += mouseX * mouseSensitivity * Time.deltaTime;
-            rotation.x += mouseY * mouseSensitivity * Time.deltaTime;
+        Quaternion localRotation = Quaternion.Euler(0, rotation.y, 0);
 
-            rotation.x = Mathf.Clamp(rotation.x, -clampAngle, clampAngle);
+        // Camera rotation
+        cameraPivot.localRotation = Quaternion.Euler(rotation.x, 0, 0);
+        transform.rotation = localRotation;
 
-            Quaternion localRotation = Quaternion.Euler(0, rotation.y, 0);
+        // Move
+        // Run
+        isRunning = Input.GetKey(KeyCode.LeftShift);
+        float moveSpeed = (isRunning == true) ? RunSpeed : Speed;
 
-            // Camera rotation
-            cameraPivot.localRotation = Quaternion.Euler(rotation.x, 0, 0);
-            transform.rotation = localRotation;
+        direction.x = (isMovable == true) ? Input.GetAxis("Horizontal") * Speed : 0;
+        direction.z = (isMovable == true) ? Input.GetAxis("Vertical") * moveSpeed : 0;
 
-            // Move
-            // Run
-            isRunning = Input.GetKey(KeyCode.LeftShift);
-            float moveSpeed = (isRunning == true) ? RunSpeed : Speed;
-
-            direction.x = Input.GetAxis("Horizontal") * Speed;
-            direction.z = Input.GetAxis("Vertical") * moveSpeed;
-
-            // This movespeed will be passed to Animate()
-            moveSpeed = Mathf.Max(Mathf.Abs(direction.x), Mathf.Abs(direction.z));
-            direction = controller.transform.TransformDirection(direction);
-            if (controller.isGrounded)
+        // This movespeed will be passed to Animate()
+        moveSpeed = Mathf.Max(Mathf.Abs(direction.x), Mathf.Abs(direction.z));
+        direction = controller.transform.TransformDirection(direction);
+        if (controller.isGrounded)
+        {
+            if (Input.GetButtonDown("Jump") && isMovable == true)
             {
-                if (Input.GetButtonDown("Jump"))
-                {
-                    direction.y = JumpPow;
-                }
+                direction.y = JumpPow;
             }
-            else
-            {         
-                direction.y -= Gravity * Time.deltaTime;
-            }
-            controller.Move(direction * Time.deltaTime);
-            
-            // Animation
-            Animate(moveSpeed);
+        }
+        else
+        {         
+            direction.y -= Gravity * Time.deltaTime;
+        }
+        controller.Move(direction * Time.deltaTime);
+        
+        // Animation
+        Animate(moveSpeed);
 
-            // Key Input
-            if(Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                lowPolyAnimationScript.SetMotion(1);
-            }
-            if(Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                lowPolyAnimationScript.SetMotion(2);
-            }
-            if(Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                lowPolyAnimationScript.SetMotion(3);
-            }
+        // Key Input
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            lowPolyAnimationScript.SetMotion(1);
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            lowPolyAnimationScript.SetMotion(2);
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            lowPolyAnimationScript.SetMotion(3);
+        }
 
-            // Camera
-            if(Input.GetButtonDown("Camera"))
-            {
-                cameraController.SetCamera();
-            }
+        // Camera
+        if(Input.GetButtonDown("Camera"))
+        {
+            cameraController.SetCamera();
         }
     }
 
