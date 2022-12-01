@@ -11,6 +11,7 @@ public class ObjectEditor : MonoBehaviour
     public string ownershipName;
 
     // Object creation
+    [HideInInspector]
     public List<GameObject> creatableObjects;
     public int objectIndex;
 
@@ -55,7 +56,6 @@ public class ObjectEditor : MonoBehaviour
     {
         if(objectIndex >= creatableObjects.Count || objectIndex < 0) return;
         // GameObject obj = Instantiate(creatableObjects[objectIndex], debugObject.transform.position, Quaternion.identity);
-
         GameObject obj = PhotonNetwork.Instantiate(
             Path.Combine("PhotonPrefabs", creatableObjects[objectIndex].name),
             debugObject.transform.position, Quaternion.identity);
@@ -238,7 +238,7 @@ public class ObjectEditor : MonoBehaviour
         isMoving = false;
         pointingObjectScript = null;
 
-        FindObjectOfType<CreatableObjectButtonUI>()?.SetButton(this, creatableObjects);
+        FindObjectOfType<CreatableObjectButtonUI>()?.SetButton(this);
         ownershipName = pv.InstantiationId.ToString();
     }
 

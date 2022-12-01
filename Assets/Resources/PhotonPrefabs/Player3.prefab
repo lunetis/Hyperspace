@@ -253,6 +253,7 @@ MonoBehaviour:
   cameraPivot: {fileID: 3645222372852416173}
   pushForce: 2
   lowPolyAnimationScript: {fileID: 1938771982283368227}
+  isMovable: 0
 --- !u!54 &7868338934185518777
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -282,6 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameras: []
+  index: 0
 --- !u!114 &4031004818277286937
 MonoBehaviour:
   m_ObjectHideFlags: 0

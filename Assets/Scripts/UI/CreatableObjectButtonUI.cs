@@ -6,28 +6,33 @@ using TMPro;
 
 public class CreatableObjectButtonUI : MonoBehaviour
 {
-    public GameObject buttonPrefab;
-
     ObjectEditor objectEditorScript;
 
-    void OnClick(int index)
+    public GameObject buttonPrefab;
+    public TextMeshProUGUI selectedObjectText;
+    public Transform objectSelectPopup;
+    public List<GameObject> creatableObjects;
+
+    void OnClick(int index, string nameText)
     {
-        print(index);
         objectEditorScript.objectIndex = index;
+        selectedObjectText.text = nameText;
     }
 
-    public void SetButton(ObjectEditor objectEditor, List<GameObject> creatableObjects)
+    public void SetButton(ObjectEditor objectEditor)
     {
         objectEditorScript = objectEditor;
+        objectEditor.creatableObjects = creatableObjects;
 
         for(int i = 0; i < creatableObjects.Count; i++)
         {
             int x = i;
+            string nameText = creatableObjects[x].name;
             var button = Instantiate(buttonPrefab);
-            button.transform.SetParent(transform);
+            button.transform.SetParent(objectSelectPopup);
 
-            button.GetComponent<Button>().onClick.AddListener(delegate{OnClick(x);});
-            button.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = creatableObjects[x].name;
+            button.GetComponent<Button>().onClick.AddListener(delegate{OnClick(x, nameText);});
+            button.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = nameText;
         }
     }
 }
