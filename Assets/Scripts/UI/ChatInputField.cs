@@ -20,7 +20,12 @@ public class ChatInputField : MonoBehaviour
         inputField.onSelect.AddListener(DisablePlayerMove);
         inputField.onDeselect.AddListener(EnablePlayerMove);
 
+        TryGetLocalMoveScript();
+    }
 
+    // 자신의 PhotonView 탐색
+    bool TryGetLocalMoveScript()
+    {
         var playerPVs = FindObjectsOfType<PhotonView>();
         foreach(var pv in playerPVs)
         {
@@ -28,18 +33,22 @@ public class ChatInputField : MonoBehaviour
             {
                 Debug.Log("Find!");
                 localMoveScript = pv.gameObject.GetComponent<MoveScript>();
-                break;
+                return true;
             }
         }
+
+        return false;
     }
 
     void DisablePlayerMove(string str)
     {
+        if(localMoveScript == null && TryGetLocalMoveScript() == false) return;
         localMoveScript.isMovable = false;
     }
 
     void EnablePlayerMove(string str)
     {
+        if(localMoveScript == null && TryGetLocalMoveScript() == false) return;
         localMoveScript.isMovable = true;
     }
 }

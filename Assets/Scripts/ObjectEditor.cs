@@ -47,7 +47,6 @@ public class ObjectEditor : MonoBehaviour
     CreatedObject pointingObjectScript;
     
     public GameObject debugObject;
-    Material debugMaterial;
 
     public PhotonView pv;
 
@@ -76,7 +75,7 @@ public class ObjectEditor : MonoBehaviour
         }
 
         // Add ownership
-        CreatedObject createdObject = obj.AddComponent<CreatedObject>();
+        CreatedObject createdObject = obj.GetComponent<CreatedObject>();
         createdObject.Ownership = ownershipName;
     }
 
@@ -119,26 +118,6 @@ public class ObjectEditor : MonoBehaviour
         return current.gameObject;
     }
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        if(pv.IsMine == false) return;
-
-        movableObjectLayer = LayerMask.NameToLayer("MovableObject");
-        movingObjectLayer = LayerMask.NameToLayer("MovingObject");
-        layerMask = (1 << LayerMask.NameToLayer("Ground"));
-        layerMask += (1 << movableObjectLayer);
-        
-        debugMaterial = debugObject.GetComponent<MeshRenderer>().material;
-
-        isMoving = false;
-        pointingObjectScript = null;
-
-        FindObjectOfType<CreatableObjectButtonUI>()?.SetButton(this, creatableObjects);
-        ownershipName = pv.InstantiationId.ToString();
-    }
-
     void CheckObject()
     {
         RaycastHit hit;
@@ -156,7 +135,6 @@ public class ObjectEditor : MonoBehaviour
             }
             else
             {
-                debugMaterial.color = Color.blue;
                 currentPointingObject = null;
             }
         }
@@ -166,7 +144,6 @@ public class ObjectEditor : MonoBehaviour
             try
             {
                 debugObject.transform.position = raycastOrigin.position + raycastOrigin.forward * raycastDistance;
-                debugMaterial.color = Color.red;
                 currentPointingObject = null;
             }
             catch(NullReferenceException e)
@@ -189,18 +166,83 @@ public class ObjectEditor : MonoBehaviour
             }
             
             // Green: Movable / Yellow: Not movable (created by other)
-            if(pointingObjectScript != null && pointingObjectScript.Ownership != ownershipName)
+            // Change object material color
+            if(selectedMovableObject != null)
             {
-                debugMaterial.color = Color.yellow;
+                ChangeObjectColor(selectedMovableObject, Color.white);
             }
-            else
+            if(currentPointingObject != null)
             {
-                debugMaterial.color = Color.green;
+                if(pointingObjectScript != null && pointingObjectScript.Ownership != ownershipName)
+                {
+                    ChangeObjectColor(currentPointingObject, Color.yellow);
+                }
+                else
+                {
+                    ChangeObjectColor(currentPointingObject, Color.green);
+                }
             }
-            
             selectedMovableObject = currentPointingObject;
         }
     }
+
+
+    void OnDestroy() {
+        if(selectedMovableObject != null)
+        {
+            ChangeObjectColor(selectedMovableObject, Color.white);
+        }
+    }
+
+
+    void ChangeObjectColor(GameObject parentObject, Color color, float colorRatio = 0.5f)
+    {
+        Renderer renderer;
+
+        Color applyColor = (Color.white * (1 - colorRatio)) + (color * colorRatio);
+
+        // Parent
+        renderer = parentObject.GetComponent<Renderer>();
+        if(renderer != null)
+        {
+            renderer.material.color = applyColor;
+        }  
+
+        // All children
+        foreach(Transform child in parentObject.transform)
+        {
+            renderer = child.GetComponent<Renderer>();
+            if(renderer != null)
+            {
+                renderer.material.color = applyColor;
+            }    
+        }
+    }
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        if(pv.IsMine == false)
+        {
+            return;
+        }
+
+        movableObjectLayer = LayerMask.NameToLayer("MovableObject");
+        movingObjectLayer = LayerMask.NameToLayer("MovingObject");
+        layerMask = (1 << LayerMask.NameToLayer("Ground"));
+        layerMask += (1 << movableObjectLayer);
+        
+        debugObject.GetComponent<MeshRenderer>().enabled = false;
+
+        isMoving = false;
+        pointingObjectScript = null;
+
+        FindObjectOfType<CreatableObjectButtonUI>()?.SetButton(this, creatableObjects);
+        ownershipName = pv.InstantiationId.ToString();
+    }
+
+
 
     // Update is called once per frame
     void Update()
