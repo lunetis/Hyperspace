@@ -11,6 +11,7 @@ public class CharacterSelectPanel : MonoBehaviour
     public GameObject buttonPrefab;
     public Transform contentUI;
 
+    public GameObject PlayerCamera;
     public TextMeshProUGUI buttonText;
     public Transform playerSpawnPosition;
 
@@ -34,9 +35,9 @@ public class CharacterSelectPanel : MonoBehaviour
     {
         buttonText.text = characterName;
         gameObject.SetActive(false);
-
+        PlayerCamera.transform.localEulerAngles= new Vector3(0, 0, 0);
         // 이전 오브젝트 삭제
-        if(playerSpawnPosition.childCount > 0)
+        if (playerSpawnPosition.childCount > 0)
         {
             Destroy(playerSpawnPosition.GetChild(0).gameObject);
         }
@@ -52,7 +53,7 @@ public class CharacterSelectPanel : MonoBehaviour
             }
         }
         //GameObject playerObject = null;
-
+        PlayerCamera.SetActive(true);
         GameObject playerExample = Instantiate(playerObject, playerSpawnPosition.transform.position, Quaternion.identity);
         playerExample.GetComponent<MoveScript>().enabled = false;
         playerExample.transform.parent = playerSpawnPosition;
