@@ -30,6 +30,7 @@ public class MoveScript : MonoBehaviourPunCallbacks
 
     bool isRunning;
 
+    [HideInInspector]
     public bool isMovable;
 
 
