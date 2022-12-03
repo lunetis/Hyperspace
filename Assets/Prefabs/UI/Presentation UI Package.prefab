@@ -84,6 +84,7 @@ MonoBehaviour:
   keynoteRenderImage: {fileID: 3519482867860661079}
   presenterUI: {fileID: 3519482865975532007}
   isReady: 0
+  pv: {fileID: 0}
 --- !u!1 &3519482866067850356
 GameObject:
   m_ObjectHideFlags: 0
@@ -2988,7 +2989,6 @@ MonoBehaviour:
   slideSlots: []
   presentationController: {fileID: 0}
   selectedSlot: {fileID: 0}
-  emoteDropdown: {fileID: 0}
 --- !u!1 &3519482867403345541
 GameObject:
   m_ObjectHideFlags: 0
@@ -4336,7 +4336,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3519482867906135991
 Transform:
   m_ObjectHideFlags: 0
