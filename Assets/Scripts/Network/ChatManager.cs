@@ -61,8 +61,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
         //if(privateReceiver=="")
         string msgs="";
         msgs=string.Format("{0}: {1}",username, currentChat);
-        hashTable["roomChat"]+="\n" + msgs;
-        PhotonNetwork.CurrentRoom.SetCustomProperties(hashTable);
+        //hashTable["roomChat"]+="\n" + msgs;
+        //PhotonNetwork.CurrentRoom.SetCustomProperties(hashTable);
         chatClient.PublishMessage("RegionChannel"+roomCode,currentChat);
         
         //if(privateReceiver!="")
@@ -100,10 +100,10 @@ public class ChatManager : MonoBehaviour, IChatClientListener
             msgs=string.Format("{0}: {1}",senders[i], messages[i]);
             chatDisplay.text+="\n" + msgs;
             //if(senders[i]==username)
-            //    hashTable["roomChat"]+="\n" + msgs;
+                hashTable["roomChat"]+="\n" + msgs;
             //Debug.Log(msgs);
         }
-        //PhotonNetwork.CurrentRoom.SetCustomProperties(hashTable);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(hashTable);
     }
     public void OnPrivateMessage(string sender, object messages,string channelName)
     {

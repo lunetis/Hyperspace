@@ -12,7 +12,7 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject createRoomButton;    
     [SerializeField] private GameObject enterRoomButton;
     [SerializeField] private GameObject quickCancelButton;
-    [SerializeField] private int roomSize;
+    private int roomSize=20;
     [SerializeField] string username;
     private bool enterRoomFlag;
     [SerializeField]
@@ -29,6 +29,14 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     {
         username = valueIn;
         //Debug.Log(username);
+    }
+    public void RoomSizeOnValueChange(string valueIn)
+    {
+        if(valueIn=="")
+            roomSize=20;
+        else
+            roomSize = int.Parse(valueIn);
+        Debug.Log(roomSize);
     }
     public override void OnConnectedToMaster()
     {
@@ -107,7 +115,7 @@ public class QuickStartLobbyController : MonoBehaviourPunCallbacks
     void CreateRoom()
     {
         RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)roomSize};
-        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode},{"roomChat",""}};
+        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode},{"roomChat",""},{"roomSize",roomSize}};
 
         // 플레이어가 방을 나갈 때 그 플레이어가 생성한 오브젝트 삭제 방지
         roomOps.CleanupCacheOnLeave = false;

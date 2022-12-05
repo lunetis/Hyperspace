@@ -10,7 +10,7 @@ public class Portal : MonoBehaviourPunCallbacks
     public int levelIndex;
     
     [SerializeField]
-    private int RoomSize = 10;
+    private int roomSize;
     private string roomCode;
     private string roomChat;
     private Hashtable hashTable;
@@ -28,6 +28,8 @@ public class Portal : MonoBehaviourPunCallbacks
                 roomCode = (string)hashTable["roomCode"];
                 
                 roomChat = (string)hashTable["roomChat"];
+
+                roomSize = (int)hashTable["roomSize"];
                 isActivePortal = true;
                 PhotonNetwork.LeaveRoom();
             }
@@ -46,8 +48,8 @@ public class Portal : MonoBehaviourPunCallbacks
     {
         if(isActivePortal == false) return;
 
-        RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
-        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode},{"roomChat", roomChat}};
+        RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)roomSize};
+        roomOps.CustomRoomProperties = new Hashtable(){{"roomCode", roomCode},{"roomChat", roomChat},{"roomSize",roomSize}};
         
         // 플레이어가 방을 나갈 때 그 플레이어가 생성한 오브젝트 삭제 방지
         roomOps.CleanupCacheOnLeave = false;
@@ -62,7 +64,7 @@ public class Portal : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         if(isActivePortal == false) return;
-        RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)RoomSize};
+        RoomOptions roomOps = new RoomOptions() {IsVisible = true, IsOpen=true, MaxPlayers=(byte)roomSize};
         PhotonNetwork.CreateRoom(Hyperspace.Utils.GetRoomCode(levelIndex, roomCode), null);
     }
     public override void OnJoinedRoom()
