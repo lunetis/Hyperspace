@@ -18,8 +18,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
     private string roomCode;
 
     [SerializeField] GameObject chatPanel;
-    [SerializeField] TMP_InputField chatField;
-    [SerializeField] TMP_Text chatDisplay;
+    TMP_InputField chatField;
+    TMP_Text chatDisplay;
     //string privateReceiver= "";
     string currentChat;
 
@@ -35,6 +35,11 @@ public class ChatManager : MonoBehaviour, IChatClientListener
          new Photon.Chat.AuthenticationValues(username));
         hashTable = PhotonNetwork.CurrentRoom.CustomProperties;
         roomCode = (string)hashTable["roomCode"];
+
+        var ChatPanelUIScript = chatPanel.GetComponent<ChatPanelUI>();
+
+        chatField = ChatPanelUIScript.chatField;
+        chatDisplay = ChatPanelUIScript.chatDisplay;
     }
 
     void Update()
